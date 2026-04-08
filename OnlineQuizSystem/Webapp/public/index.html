@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Quiz System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page" id="landing-page">
+    <div class="card auth-card">
+      <div class="intro-badge">Online Quiz Platform</div>
+      <h1>Choose your role</h1>
+      <p>Start as an admin to manage the question bank or as a user to study and take quizzes.</p>
+      <div class="role-grid">
+        <button class="role-button" id="role-admin">Admin</button>
+        <button class="role-button" id="role-user">User</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page hidden" id="auth-page">
+    <div class="card auth-card">
+      <div class="intro-badge" id="auth-badge">Sign in</div>
+      <h1 id="auth-heading">Welcome</h1>
+      <p id="auth-subtitle">Please login to continue.</p>
+      <form id="auth-form">
+        <div class="field-group">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" placeholder="Enter your username" autocomplete="username" />
+        </div>
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+        <div class="field-group hidden" id="register-section">
+          <label for="password-confirm">Confirm Password</label>
+          <input id="password-confirm" name="passwordConfirm" type="password" placeholder="Confirm your password" autocomplete="new-password" />
+        </div>
+        <button class="primary-button" type="submit" id="auth-submit">Continue</button>
+        <div class="message" id="auth-message"></div>
+      </form>
+      <div class="auth-actions" id="auth-actions">
+        <span id="auth-mode-text">Don't have an account?</span>
+        <button class="secondary-button text-button" id="switch-auth-mode" type="button">Register</button>
+      </div>
+      <button class="secondary-button" id="auth-back">Back to role selection</button>
+    </div>
+  </div>
+
+  <div class="page hidden" id="dashboard-page">
+    <header class="topbar">
+      <div>
+        <span class="brand">Quiz Platform</span>
+        <span class="user-badge" id="user-role"></span>
+      </div>
+      <button class="secondary-button" id="logout-button">Logout</button>
+    </header>
+
+    <main class="dashboard-grid">
+      <section class="panel welcome-panel">
+        <p class="eyebrow">Dashboard</p>
+        <h2 id="welcome-title">Welcome back</h2>
+        <p id="dashboard-subtitle">Select your workflow and begin.</p>
+      </section>
+
+      <section class="panel action-panel" id="user-actions">
+        <h3>Study & Quiz</h3>
+        <div class="field-group">
+          <label>Difficulty</label>
+          <select id="difficulty-select">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="option-row">
+          <button class="primary-button" id="study-button">Study Mode</button>
+          <button class="primary-button" id="quiz-button">Quiz Mode</button>
+        </div>
+        <div class="option-row" style="margin-top:16px;">
+          <button class="secondary-button" id="history-button">View Quiz History</button>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="activity-panel">
+        <div class="activity-header">
+          <div>
+            <p class="eyebrow">Activity</p>
+            <h3 id="activity-title">Activity</h3>
+          </div>
+          <button class="secondary-button" id="back-to-dashboard">Back</button>
+        </div>
+        <div id="activity-content"></div>
+      </section>
+
+      <section class="panel hidden" id="history-panel">
+        <div class="activity-header">
+          <div>
+            <p class="eyebrow">History</p>
+            <h3>Quiz Results</h3>
+          </div>
+          <button class="secondary-button" id="back-to-dashboard-history">Back</button>
+        </div>
+        <div id="history-content"></div>
+      </section>
+
+      <section class="panel hidden" id="admin-panel">
+        <div class="admin-grid">
+          <div class="admin-card admin-form-card">
+            <div class="section-title">
+              <p class="eyebrow">Admin</p>
+              <h3>Manage questions</h3>
+            </div>
+            <form id="question-form">
+              <div class="field-group">
+                <label for="question-text">Question</label>
+                <textarea id="question-text" rows="3" placeholder="Enter the question text"></textarea>
+              </div>
+              <div class="field-group small-group">
+                <div>
+                  <label for="opt1">Option 1</label>
+                  <input id="opt1" type="text" placeholder="Option 1" />
+                </div>
+                <div>
+                  <label for="opt2">Option 2</label>
+                  <input id="opt2" type="text" placeholder="Option 2" />
+                </div>
+              </div>
+              <div class="field-group small-group">
+                <div>
+                  <label for="opt3">Option 3</label>
+                  <input id="opt3" type="text" placeholder="Option 3" />
+                </div>
+                <div>
+                  <label for="opt4">Option 4</label>
+                  <input id="opt4" type="text" placeholder="Option 4" />
+                </div>
+              </div>
+              <div class="field-group half-group">
+                <div>
+                  <label for="correct-option">Correct Option</label>
+                  <select id="correct-option">
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="4">Option 4</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="question-difficulty">Difficulty</label>
+                  <select id="question-difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="primary-button" type="submit" id="question-submit">Save Question</button>
+                <button class="secondary-button hidden" type="button" id="question-cancel">Cancel</button>
+              </div>
+              <div class="message" id="question-message"></div>
+            </form>
+          </div>
+          <div class="admin-card admin-table-card">
+            <div class="section-title">
+              <p class="eyebrow">Question bank</p>
+              <h3>Review & edit</h3>
+            </div>
+            <div class="table-wrapper" id="question-table-wrapper"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
