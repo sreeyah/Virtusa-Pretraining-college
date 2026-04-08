@@ -1,0 +1,239 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+package gui;
+
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import service.AdminService;
+import service.QuestionData;
+
+public class AdminFrame extends JFrame {
+   private JTextField questionField;
+   private JTextField option1Field;
+   private JTextField option2Field;
+   private JTextField option3Field;
+   private JTextField option4Field;
+   private JComboBox<Integer> correctOptionBox;
+   private JComboBox<String> difficultyBox;
+   private JButton addButton;
+   private JButton updateButton;
+   private JButton backButton;
+   private JButton exitButton;
+   private JTable questionTable;
+   private DefaultTableModel tableModel;
+   private AdminService adminService = new AdminService();
+   private int selectedQuestionId = -1;
+
+   public AdminFrame() {
+      this.initializeUI();
+      this.loadQuestions();
+   }
+
+   private void initializeUI() {
+      this.setTitle("Admin Panel - Manage Questions");
+      this.setSize(900, 600);
+      this.setDefaultCloseOperation(3);
+      this.setLocationRelativeTo((Component)null);
+      JPanel var1 = new JPanel(new GridBagLayout());
+      GridBagConstraints var2 = new GridBagConstraints();
+      var2.insets = new Insets(5, 5, 5, 5);
+      var2.anchor = 17;
+      var2.gridx = 0;
+      var2.gridy = 0;
+      var2.gridwidth = 2;
+      var1.add(new JLabel("Question:"), var2);
+      var2.gridy = 1;
+      this.questionField = new JTextField(50);
+      var1.add(this.questionField, var2);
+      var2.gridwidth = 1;
+      var2.gridy = 2;
+      var2.gridx = 0;
+      var1.add(new JLabel("Option 1:"), var2);
+      var2.gridx = 1;
+      this.option1Field = new JTextField(25);
+      var1.add(this.option1Field, var2);
+      var2.gridy = 3;
+      var2.gridx = 0;
+      var1.add(new JLabel("Option 2:"), var2);
+      var2.gridx = 1;
+      this.option2Field = new JTextField(25);
+      var1.add(this.option2Field, var2);
+      var2.gridy = 4;
+      var2.gridx = 0;
+      var1.add(new JLabel("Option 3:"), var2);
+      var2.gridx = 1;
+      this.option3Field = new JTextField(25);
+      var1.add(this.option3Field, var2);
+      var2.gridy = 5;
+      var2.gridx = 0;
+      var1.add(new JLabel("Option 4:"), var2);
+      var2.gridx = 1;
+      this.option4Field = new JTextField(25);
+      var1.add(this.option4Field, var2);
+      var2.gridy = 6;
+      var2.gridx = 0;
+      var1.add(new JLabel("Correct Option:"), var2);
+      var2.gridx = 1;
+      this.correctOptionBox = new JComboBox(new Integer[]{1, 2, 3, 4});
+      var1.add(this.correctOptionBox, var2);
+      var2.gridy = 7;
+      var2.gridx = 0;
+      var1.add(new JLabel("Difficulty:"), var2);
+      var2.gridx = 1;
+      this.difficultyBox = new JComboBox(new String[]{"easy", "medium", "hard"});
+      var1.add(this.difficultyBox, var2);
+      var2.gridy = 8;
+      var2.gridx = 0;
+      this.addButton = new JButton("Add Question");
+      var1.add(this.addButton, var2);
+      var2.gridx = 1;
+      this.updateButton = new JButton("Update Question");
+      var1.add(this.updateButton, var2);
+      var2.gridy = 9;
+      var2.gridx = 0;
+      this.backButton = new JButton("Back");
+      var1.add(this.backButton, var2);
+      var2.gridx = 1;
+      this.exitButton = new JButton("Exit");
+      var1.add(this.exitButton, var2);
+      this.tableModel = new DefaultTableModel(new String[]{"ID", "Question", "Option1", "Option2", "Option3", "Option4", "Correct", "Difficulty"}, 0) {
+         public boolean isCellEditable(int var1, int var2) {
+            return false;
+         }
+      };
+      this.questionTable = new JTable(this.tableModel);
+      this.questionTable.setSelectionMode(0);
+      this.questionTable.getColumnModel().getColumn(0).setMinWidth(40);
+      this.questionTable.getColumnModel().getColumn(0).setMaxWidth(60);
+      JScrollPane var3 = new JScrollPane(this.questionTable);
+      JSplitPane var4 = new JSplitPane(0, var1, var3);
+      var4.setDividerLocation(320);
+      this.add(var4);
+      this.addButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent var1) {
+            AdminFrame.this.addQuestion();
+         }
+      });
+      this.updateButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent var1) {
+            AdminFrame.this.updateQuestion();
+         }
+      });
+      this.backButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent var1) {
+            AdminFrame.this.dispose();
+            (new RoleSelectionFrame()).setVisible(true);
+         }
+      });
+      this.exitButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent var1) {
+            System.exit(0);
+         }
+      });
+      this.questionTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+         public void valueChanged(ListSelectionEvent var1) {
+            if (!var1.getValueIsAdjusting() && AdminFrame.this.questionTable.getSelectedRow() >= 0) {
+               AdminFrame.this.selectQuestion(AdminFrame.this.questionTable.getSelectedRow());
+            }
+
+         }
+      });
+   }
+
+   private void loadQuestions() {
+      this.tableModel.setRowCount(0);
+
+      for(QuestionData var3 : this.adminService.getAllQuestions()) {
+         this.tableModel.addRow(new Object[]{var3.getId(), var3.getQuestionText(), var3.getOption1(), var3.getOption2(), var3.getOption3(), var3.getOption4(), var3.getCorrectOption(), var3.getDifficulty()});
+      }
+
+   }
+
+   private void selectQuestion(int var1) {
+      this.selectedQuestionId = (Integer)this.tableModel.getValueAt(var1, 0);
+      this.questionField.setText((String)this.tableModel.getValueAt(var1, 1));
+      this.option1Field.setText((String)this.tableModel.getValueAt(var1, 2));
+      this.option2Field.setText((String)this.tableModel.getValueAt(var1, 3));
+      this.option3Field.setText((String)this.tableModel.getValueAt(var1, 4));
+      this.option4Field.setText((String)this.tableModel.getValueAt(var1, 5));
+      this.correctOptionBox.setSelectedItem((Integer)this.tableModel.getValueAt(var1, 6));
+      this.difficultyBox.setSelectedItem((String)this.tableModel.getValueAt(var1, 7));
+   }
+
+   private void addQuestion() {
+      String var1 = this.questionField.getText().trim();
+      String var2 = this.option1Field.getText().trim();
+      String var3 = this.option2Field.getText().trim();
+      String var4 = this.option3Field.getText().trim();
+      String var5 = this.option4Field.getText().trim();
+      int var6 = (Integer)this.correctOptionBox.getSelectedItem();
+      String var7 = (String)this.difficultyBox.getSelectedItem();
+      if (!var1.isEmpty() && !var2.isEmpty() && !var3.isEmpty() && !var4.isEmpty() && !var5.isEmpty()) {
+         if (this.adminService.addQuestion(var1, var2, var3, var4, var5, var6, var7)) {
+            JOptionPane.showMessageDialog(this, "Question added successfully!");
+            this.clearFields();
+            this.loadQuestions();
+         } else {
+            JOptionPane.showMessageDialog(this, "Failed to add question. Check the database connection.");
+         }
+
+      } else {
+         JOptionPane.showMessageDialog(this, "Please fill all fields!");
+      }
+   }
+
+   private void updateQuestion() {
+      if (this.selectedQuestionId < 0) {
+         JOptionPane.showMessageDialog(this, "Select a question from the table to update.");
+      } else {
+         String var1 = this.questionField.getText().trim();
+         String var2 = this.option1Field.getText().trim();
+         String var3 = this.option2Field.getText().trim();
+         String var4 = this.option3Field.getText().trim();
+         String var5 = this.option4Field.getText().trim();
+         int var6 = (Integer)this.correctOptionBox.getSelectedItem();
+         String var7 = (String)this.difficultyBox.getSelectedItem();
+         if (!var1.isEmpty() && !var2.isEmpty() && !var3.isEmpty() && !var4.isEmpty() && !var5.isEmpty()) {
+            if (this.adminService.updateQuestion(this.selectedQuestionId, var1, var2, var3, var4, var5, var6, var7)) {
+               JOptionPane.showMessageDialog(this, "Question updated successfully!");
+               this.clearFields();
+               this.selectedQuestionId = -1;
+               this.loadQuestions();
+            } else {
+               JOptionPane.showMessageDialog(this, "Failed to update question. Check the database connection.");
+            }
+
+         } else {
+            JOptionPane.showMessageDialog(this, "Please fill all fields!");
+         }
+      }
+   }
+
+   private void clearFields() {
+      this.selectedQuestionId = -1;
+      this.questionField.setText("");
+      this.option1Field.setText("");
+      this.option2Field.setText("");
+      this.option3Field.setText("");
+      this.option4Field.setText("");
+      this.correctOptionBox.setSelectedIndex(0);
+      this.difficultyBox.setSelectedIndex(0);
+      this.questionTable.clearSelection();
+   }
+}
