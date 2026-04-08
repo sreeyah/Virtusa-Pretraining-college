@@ -1,0 +1,49 @@
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
+import java.util.Scanner;
+import service.AdminService;
+import service.AuthService;
+import service.QuizService;
+
+public class Main {
+   public Main() {
+   }
+
+   public static void main(String[] var0) {
+      Scanner var1 = new Scanner(System.in);
+      AuthService var2 = new AuthService();
+      QuizService var3 = new QuizService();
+      new AdminService();
+      System.out.println("1. Login\n2. Register");
+      int var5 = var1.nextInt();
+      var1.nextLine();
+      if (var5 == 2) {
+         System.out.print("Username: ");
+         String var6 = var1.nextLine();
+         System.out.print("Password: ");
+         String var7 = var1.nextLine();
+         var2.register(var6, var7);
+         System.out.println("Registered Successfully!");
+      }
+
+      System.out.print("Login Username: ");
+      String var11 = var1.nextLine();
+      System.out.print("Password: ");
+      String var12 = var1.nextLine();
+      String var8 = var2.login(var11, var12);
+      if (var8 == null) {
+         System.out.println("Invalid Login!");
+      } else {
+         if (var8.equals("admin")) {
+            System.out.println("Admin Panel");
+         } else {
+            System.out.println("1. Quiz Mode\n2. Study Mode");
+            int var9 = var1.nextInt();
+            var1.nextLine();
+            System.out.print("Choose difficulty (easy/medium/hard): ");
+            String var10 = var1.nextLine();
+            var3.startQuiz(var10);
+         }
+
+      }
+   }
+}
