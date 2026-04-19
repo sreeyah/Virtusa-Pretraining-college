@@ -45,7 +45,13 @@ OnlineQuizSystem/
 
 ## 📸 Screenshots
 
-(Add screenshots here)
+<img width="1920" height="1020" alt="Screenshot 2026-04-19 192109" src="https://github.com/user-attachments/assets/084dda28-eaad-40b4-ad6e-81e95ea17180" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-19 192117" src="https://github.com/user-attachments/assets/22755dc3-adf8-4988-878e-487f4b2f5635" />
+<img width="1920" height="1020" alt="Screenshot 2026-04-19 192132" src="https://github.com/user-attachments/assets/e7edd962-fad4-4eba-87b3-421d71abf612" />
+<img width="1920" height="1020" alt="Screenshot 2026-04-19 193335" src="https://github.com/user-attachments/assets/64f47f60-bbfb-452b-b6f1-d2e944dcbf31" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-19 193346" src="https://github.com/user-attachments/assets/e0d1082a-6d8d-43ff-8923-8569fa25811a" />
+
+
 
 --------------------------------------------------------------------------
 
